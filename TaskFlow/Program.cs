@@ -1,7 +1,53 @@
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Configuration;
+using Npgsql;
+using System.Data;
+using TaskFlow.Context;
+using FluentValidation.AspNetCore;
+using FluentValidation;
+using Microsoft.AspNetCore.Identity;
+using TaskFlow.Entities.Models;
+using TaskFlow.Services;
+using System.Reflection;
+
 var builder = WebApplication.CreateBuilder(args);
 
+//builder.Services.Configure<DbConnection>(builder.Configuration.GetSection("MyDatabaseConnection"));
+
+builder.Services.AddSingleton<DbConnection>();
+
+
+//builder.Services.AddSingleton<IDbConnection>(options =>
+//{
+//    var configuration = options.GetRequiredService<IConfiguration>();
+//    var connectionString = configuration.GetConnectionString("MyDatabaseConnection");
+//    return new NpgsqlConnection(connectionString);
+//});
+
 // Add services to the container.
-builder.Services.AddRazorPages();
+
+builder.Services.AddControllersWithViews();
+
+builder.Services.AddTransient<IValidator<Employee>, EmployeeValidation>();
+
+
+builder.Services.AddControllersWithViews()
+     .AddFluentValidation(options =>
+     {
+         // Validate child properties and root collection elements
+         options.ImplicitlyValidateChildProperties = true;
+         options.ImplicitlyValidateRootCollectionElements = true;
+
+         // Automatic registration of validators in assembly
+         options.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+     });
+//.AddFluentValidation();
+//builder.Services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters();
+
+
+
 
 var app = builder.Build();
 
@@ -13,13 +59,13 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
-app.UseStaticFiles();
+app.UseHttpsRedirection(); //http portu olan çalýþýrsa https olana zorla demek.
 
-app.UseRouting();
+app.UseStaticFiles();  //projeyi gerçek dünyaya açtýðýnda stil dosyalarýný (html css vs) eriþime aç, eriþilebilir hale getir demek. Bu olmazsa stilleri gerçek kullanýcýlar göremez.
+
+app.UseRouting(); //localhost:7216/employee/login gibi geçiþleri yapmamýzý saðlayan yapý.
 
 app.UseAuthorization();
 
-app.MapRazorPages();
-
+app.MapDefaultControllerRoute();
 app.Run();
