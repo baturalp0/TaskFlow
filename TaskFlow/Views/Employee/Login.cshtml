@@ -2,6 +2,9 @@
 
 @model Employee
 
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}
 
 <style>
 
@@ -42,10 +45,12 @@
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control" id="floatingInput" placeholder="name@example.com" asp-for="code">
                                     <label for="floatingInput">Personel Kodu</label>
+                                    <span asp-validation-for="code" class="text-danger"></span>
                                 </div>
                                 <div class="form-floating mb-3">
                                     <input type="password" class="form-control" id="floatingPassword" placeholder="Password" asp-for="password">
                                     <label for="floatingPassword">Şifre</label>
+                                    <span asp-validation-for="password" class="text-danger"></span>
                                 </div>
 
                                 <div class="form-check mb-3">

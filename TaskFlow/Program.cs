@@ -9,7 +9,6 @@ using FluentValidation.AspNetCore;
 using FluentValidation;
 using Microsoft.AspNetCore.Identity;
 using TaskFlow.Entities.Models;
-using TaskFlow.Services;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,23 +28,6 @@ builder.Services.AddSingleton<DbConnection>();
 // Add services to the container.
 
 builder.Services.AddControllersWithViews();
-
-builder.Services.AddTransient<IValidator<Employee>, EmployeeValidation>();
-
-
-builder.Services.AddControllersWithViews()
-     .AddFluentValidation(options =>
-     {
-         // Validate child properties and root collection elements
-         options.ImplicitlyValidateChildProperties = true;
-         options.ImplicitlyValidateRootCollectionElements = true;
-
-         // Automatic registration of validators in assembly
-         options.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-     });
-//.AddFluentValidation();
-//builder.Services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters();
-
 
 
 

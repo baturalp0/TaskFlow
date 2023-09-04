@@ -1,56 +1,115 @@
-﻿@model Task
+﻿@model TaskFlow.Entities.Models.Task
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}
+
 
 
 <style>
     .input-group-append {
         cursor: pointer;
-    }
+    }   
 </style>
 
 <div class="container">
-    <form>
+    <form asp-controller="Task" asp-action="Add" method="post" >
         <div class="m-5"></div>
+@*        <div asp-validation-summary="All" class="text-danger"></div>
+*@        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Görev Başlığı</label>
+            <input type="text" class="form-control" asp-for="header">
+            <span asp-validation-for="header" class="text-danger"></span>
+        </div>
 
         <div class="mb-3">
-            <label for="exampleInputEmail1" class="form-label">Görev Başlığı</label>
+            <label for="exampleInputEmail1" class="form-label">Başlangıç Tarihi</label>
+            <input type="datetime-local" class="form-control" asp-for="start">
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Bitiş Tarihi</label>
+            <input type="datetime-local" class="form-control" asp-for="deadline">
+        </div>
+
+        @*<div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Açıklama</label>
+            <input type="text" class="form-control" asp-for="description">
+            <span asp-validation-for="description" class="text-danger"></span>
+        </div>*@
+
+        <div class="mb-3">
+            <label for="exampleTextarea" class="form-label">Açıklama</label>
+            <textarea class="form-control" asp-for="description" rows="4"></textarea>
+            <span asp-validation-for="description" class="text-danger"></span>
+        </div>
+
+
+       @* <div class="input-group mb-3">
+            <select class="form-select" id="inputGroupSelect01">
+                <option selected>Departman Seçiniz</option>
+                <option value="1">One</option>
+                <option value="2">Two</option>
+                <option value="3">Three</option>
+            </select>
+        </div>*@
+
+        <div class="m-3">
+            <label class="form-label">Departman</label>
+            <select name="departmens" class="form-control" asp-items="@ViewBag.DepartmentList"></select>
+        </div>
+
+        @*<div class="input-group mb-3">
+            <select class="form-select" id="inputGroupSelect01">
+                <option selected>Görev Önceliği</option>
+                <option value="1">One</option>
+                <option value="2">Two</option>
+                <option value="3">Three</option>
+            </select>
+        </div>*@
+
+        @*<div class="input-group mb-3">
+            <select class="form-select" asp-items="ViewBag.PriorityList">
+                <option value="">Görev Önceliği Seçiniz</option>
+               
+            </select>
+        </div>
+*@
+        <div class="m-3">
+            <label class="form-label">Görev Önceliği</label>
+            <select name="tasks" class="form-control" asp-items="@ViewBag.PriorityList"></select>
+        </div>
+
+
+
+
+
+        <div class="input-group mb-3">
+            <select class="form-select" id="inputGroupSelect01">
+                <option selected>1.Kişi</option>
+                <option value="1">One</option>
+                <option value="2">Two</option>
+                <option value="3">Three</option>
+            </select>
+            <label for="exampleInputEmail1" class="form-label">Görevi</label>
             <input type="text" class="form-control">
         </div>
 
-        @*-----------datepicker------------*@
-        <div class="container shadow min-vh-100 py-2">
-            <div class="row justify-content-center">
-                <div class="col-lg-3 col-sm-6">
-                    <label for="startDate">Başlangıç Tarihi</label>
-                    <input id="startDate" class="form-control" type="date" />
-                    <span id="startDateSelected"></span>
-                </div>
-                <div class="col-lg-3 col-sm-6">
-                    <label for="endDate">Bitiş Tarihi</label>
-                    <input id="endDate" class="form-control" type="date" />
-                    <span id="endDateSelected"></span>
-                </div>
-            </div>
+        <div class="input-group mb-3">
+            <select class="form-select" id="inputGroupSelect01">
+                <option selected>2.Kişi</option>
+                <option value="1">One</option>
+                <option value="2">Two</option>
+                <option value="3">Three</option>
+            </select>
+            <label for="exampleInputEmail1" class="form-label">Görevi</label>
+            <input type="text" class="form-control">
         </div>
-        @*-----------datepicker------------*@
 
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary">Görevi Yayınla</button>
     </form>
 </div>
 
 
 
-@*DatePicker için js kodları*@
-<script>
-    let startDate = document.getElementById('startDate')
-    let endDate = document.getElementById('endDate')
 
-    startDate.addEventListener('change', (e) => {
-        let startDateVal = e.target.value
-        document.getElementById('startDateSelected').innerText = startDateVal
-    })
 
-    endDate.addEventListener('change', (e) => {
-        let endDateVal = e.target.value
-        document.getElementById('endDateSelected').innerText = endDateVal
-    })
-</script>

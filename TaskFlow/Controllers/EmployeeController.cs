@@ -23,6 +23,7 @@ public class EmployeeController : Controller
         return View();
     }
 
+    [HttpPost]
     public IActionResult Login(Employee model)
     {
         string connectionString = "server=localhost; port=5432; Database=taskflow; user Id=postgres; password=antalya";
